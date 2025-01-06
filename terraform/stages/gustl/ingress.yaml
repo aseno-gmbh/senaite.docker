@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: cluster-issuer-global
+  name: lims-ingress
+  namespace: senaite
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: lims.cloud-doctor.eu
+    http:
+      paths:
+      - backend:
+          service:
+            name: senaite
+            port:
+              number: 8080
+        path: /
+        pathType: ImplementationSpecific
+  # tls:
+  # - hosts:
+  #   - lims.cloud-doctor.eu
+  #   secretName: lims-cloud-doctor.eu-tls
+

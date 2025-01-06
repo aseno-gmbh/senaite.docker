@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: lims-cloud-doctor.eu-tls
+  namespace: senaite
+spec:
+  dnsNames:
+  - lims.cloud-doctor.eu
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: cluster-issuer-global
+  secretName: lims-cloud-doctor.eu-tls
+  usages:
+  - digital signature
+  - key encipherment
+  - server auth

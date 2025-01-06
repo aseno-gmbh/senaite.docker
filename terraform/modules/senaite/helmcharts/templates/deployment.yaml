@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: senaite
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: senaite
+spec:
+  selector:
+    matchLabels:
+      app: senaite
+      tier: senaite
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: senaite
+        tier: senaite
+    spec:
+      containers:
+      - name: senaite
+        image: {{ .Values.global.imageRegistry }}/{{ .Values.deployment.image }}
+        imagePullPolicy: IfNotPresent #Always 
+        resources:
+          limits:
+            cpu: {{ .Values.deployment.resources.cpuLimit }}
+            memory: {{ .Values.deployment.resources.memoryLimit }}
+          requests:
+            cpu: {{ .Values.deployment.resources.cpuRequest }}
+            memory: {{ .Values.deployment.resources.memoryRequest }}
+        ports:
+        - containerPort: {{ .Values.deployment.containerPort }}
+        env:
+        - name: DB_URL
+          value: {{ .Values.db.url }}
+        - name: DB_USER
+          value: {{ .Values.db.user }}
+        - name: DB_PASS
+          value: {{ .Values.db.pass }}
+        - name: DB_USER_ADMIN
+          value: {{ .Values.db.userAdmin }}
+        - name: DB_PASS_ADMIN
+          value: {{ .Values.db.passAdmin }}
+        - name: SERVER_NODENAME
+          value: {{ .Values.deployment.serverNodename }}
+        - name: SPRING_PROFILES_ACTIVE
+          value: {{ .Values.deployment.springProfileActive }}
